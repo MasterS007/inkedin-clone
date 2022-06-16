@@ -1,13 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { AnimatePresence } from "framer-motion";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { modalState, modalTypeState } from "../atoms/modalAtom";
 import Feed from "../components/Feed";
 import HeaderDashboard from "../components/HeaderDashboard";
+import Modal from "../components/Modal";
 import Sidebar from "../components/Sidebar";
 
 export default function Home() {
+  const [modalOpen, setModalOpen] = useRecoilState(modalState);
+  const [modalType, setModalType] = useRecoilState(modalTypeState);
+
   const router = useRouter();
   const { status } = useSession({
     required: true,
@@ -47,6 +54,13 @@ export default function Home() {
           <Feed />
         </div>
         {/* widget */}
+
+        {/* Modal */}
+        <AnimatePresence>
+          {modalOpen && (
+            <Modal handleClose={() => setModalOpen(false)} type={modalType} />
+          )}
+        </AnimatePresence>
       </main>
     </div>
   );
