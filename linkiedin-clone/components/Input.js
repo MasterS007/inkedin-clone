@@ -15,11 +15,12 @@ function Input() {
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
   const [modalType, setModalType] = useRecoilState(modalTypeState);
 
+  console.log(session);
   return (
     <div className="bg-white dark:bg-[#1D2226] rounded-lg p-3 space-y-3 border border-x-gray-300 dark:border-none ">
       <div className="flex items-center space-x-2">
         <Avatar
-          src={session?.user ? session.user.image : ""}
+          src={session?.user?.image}
           className="!h-10 !w-10 !cursor-pointer"
         />
         {/* modal */}
