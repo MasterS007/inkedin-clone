@@ -3,15 +3,16 @@ import { AnimatePresence } from "framer-motion";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { modalState, modalTypeState } from "../atoms/modalAtom";
 import Feed from "../components/Feed";
 import HeaderDashboard from "../components/HeaderDashboard";
 import Modal from "../components/Modal";
 import Sidebar from "../components/Sidebar";
+import { connectToDb } from "../util/mongodb";
 
-export default function Home() {
+export default function Home({ posts }) {
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
   const [modalType, setModalType] = useRecoilState(modalTypeState);
 
@@ -22,19 +23,22 @@ export default function Home() {
       router.push("/home");
     },
   });
+
+  console.log("status", status);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      setLoading(false);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (status === "authenticated") {
+  //     setLoading(false);
+  //   }
+  // }, []);
 
-  return loading ? (
-    <div>
-      <h1>jsnajfnjsanfj</h1>
-    </div>
-  ) : (
+  return (
+    // loading ?
+    //   <div>
+    //     <h1>jsnajfnjsanfj</h1>
+    //   </div>
+    // ) : (
     <div className="bg-[#F3F2EF] dark:bg-black dark:text-white h-screen overflow-y-scroll md:space-y-6">
       <Head>
         <title>feed | LinkiedIn</title>
@@ -51,7 +55,7 @@ export default function Home() {
           <Sidebar />
 
           {/* feed */}
-          <Feed />
+          <Feed posts={posts} />
         </div>
         {/* widget */}
 
@@ -69,6 +73,7 @@ export default function Home() {
 export async function getServerSideProps(context) {
   //if the user is authenticated
   const session = await getSession(context);
+  //console.log("session", session);
 
   if (!session) {
     return {
@@ -79,9 +84,28 @@ export async function getServerSideProps(context) {
     };
   }
 
+  // Get Post SSR
+  const { db } = await connectToDb();
+  const posts = await db
+    .collection("posts")
+    .find()
+    .sort({ timestamp: -1 })
+    .toArray();
+
+  //Google News API
+
   return {
     props: {
       session,
+      posts: posts.map((post) => ({
+        _id: post._id.toString(),
+        input: post.input,
+        photoUrl: post.photoUrl,
+        username: post.username,
+        email: post.email,
+        userImg: post.userImg,
+        createdAt: post.createdAt,
+      })),
     },
   };
 }
