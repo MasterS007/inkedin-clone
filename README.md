@@ -1,1 +1,1 @@
-# inkedin-clone
+# linkedin-clone
