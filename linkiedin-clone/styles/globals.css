@@ -24,11 +24,8 @@
   .inputButton {
     @apply flex items-center space-x-2 font-medium cursor-pointer text-sm;
   }
-  .container {
-    @apply bg-[#eaeaea] bg-cover align-middle my-[20%] mx-auto;
-  }
 
-  .fa-linkedin {
-    @apply block text-center text-[#0077B5];
+  .postButton {
+    @apply flex items-center justify-center space-x-2 cursor-pointer hover:bg-black/10 dark:hover:bg-black/20 w-full py-2.5 rounded transition ease-out font-medium;
   }
 }

@@ -1,6 +1,6 @@
 import { AddRounded, BookmarkOutlined } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 
 function Sidebar() {
@@ -55,7 +55,7 @@ function Sidebar() {
 
       {/* bottom */}
 
-      <div className="hidden md:flex bg-white dark:bg-[#1D2226] text-black/70 dark:text-white/75 rounded-lg overflow-hidden flex-col space-y2 pt-2.5 sticky top-20 border border-gray-300 dark:border-none">
+      <div className="hidden md:flex bg-white dark:bg-[#1D2226] text-black/70 dark:text-white/75 rounded-lg overflow-hidden flex-col space-y-2 pt-2.5 sticky top-20 border border-gray-300 dark:border-none">
         <p className="sidebarLink">Groups</p>
         <div className="flex items-center justify-between">
           <p className="sidebarLink">Events</p>
@@ -64,6 +64,11 @@ function Sidebar() {
         <p className="sidebarLink">Followed Hashtag</p>
         <div className="sidebarButton text-center">
           <h4 className="dark:text-white font-medium text-sm">Discover</h4>
+        </div>
+      </div>
+      <div className=" bg-white dark:bg-[#1D2226] text-black/70 dark:text-white/75 rounded-lg overflow-hidden space-y-2 pt-1 sticky top-[13.7rem] border border-gray-300 dark:border-none">
+        <div className="sidebarButton text-center" onClick={signOut}>
+          <h4 className="dark:text-white font-medium text-sm">Sign Out</h4>
         </div>
       </div>
     </div>
