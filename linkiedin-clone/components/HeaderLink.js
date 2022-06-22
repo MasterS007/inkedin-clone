@@ -1,4 +1,7 @@
+import { useSession } from "next-auth/react";
+
 function HeaderLink({ Icon, text, avatar, feed, hidden, active }) {
+  const { data: session } = useSession();
   return (
     <div
       className={`${
@@ -10,7 +13,11 @@ function HeaderLink({ Icon, text, avatar, feed, hidden, active }) {
       } ${active && "!text-black dark:!text-white"} `}
     >
       {/* It's a component. That's why destructure props Icon starts with capital */}
-      {avatar ? <Icon className="!h-7 !w-7 lg:!-mb-1" /> : <Icon />}
+      {avatar ? (
+        <Icon className="!h-7 !w-7 lg:!-mb-1" src={session?.user?.image} />
+      ) : (
+        <Icon />
+      )}
       {/* need to use !important for using MUI*/}
 
       <h4

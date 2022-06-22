@@ -2,8 +2,11 @@ import { CloseRounded } from "@mui/icons-material";
 import { Avatar, IconButton } from "@mui/material";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
+import { useRecoilValue } from "recoil";
+import { getPostState } from "../atoms/postAtom";
 import Backdrop from "./Backdrop";
 import Form from "./Form";
+import Post from "./Post";
 
 const dropIn = {
   hidden: {
@@ -52,6 +55,8 @@ const photoPost = {
 
 function Modal({ handleClose, type }) {
   const { data: session } = useSession();
+  const post = useRecoilValue(getPostState);
+
   return (
     <Backdrop onClick={handleClose}>
       {type === "dropIn" && (
@@ -99,7 +104,7 @@ function Modal({ handleClose, type }) {
             className="object-contain max-h-[80vh] w-full max-w-3xl rounded-l-lg"
           />
           <div className="w-full md:w-3/5 bg-white dark:bg-[#1D2226] rounded-r-lg">
-            {/* <Post post={post} modalPost /> */}
+            <Post post={post} modalPost />
           </div>
         </motion.div>
       )}
